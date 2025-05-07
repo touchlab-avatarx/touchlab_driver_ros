@@ -43,9 +43,9 @@ class TouchlabDriver(Node):
             self.get_logger().error(f"{e}")
             exit(1)
 
-        self.raw_pub = self.create_publisher(Float64MultiArrayStamped, 'touchlab/raw', 10,
+        self.raw_pub = self.create_publisher(Float64MultiArrayStamped, '~/raw', 10,
                                              callback_group=MutuallyExclusiveCallbackGroup())
-        self.cal_pub = self.create_publisher(Float64MultiArrayStamped, 'touchlab/calibrated', 10,
+        self.cal_pub = self.create_publisher(Float64MultiArrayStamped, '~/calibrated', 10,
                                              callback_group=MutuallyExclusiveCallbackGroup())
 
         self.get_logger().info("Touchlab Driver Started")
