@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+# Copyright (c) 2025 Touchlab Limited. All Rights Reserved
+# Unauthorized copying or modifications of this file, via any medium is strictly prohibited.
+
+import rclpy
+import touchlab_comm_py as tl
+from touchlab_msgs.msg import Float64MultiArrayStamped
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
+from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from threading import Thread
+import sys
+
+class TouchlabDriver(Node):
+    def __init__(self):
+        super().__init__('touchlab_driver')
+
+        self.declare_parameter("port", "")
+        self.declare_parameter("timeout", 500)
+        self.declare_parameter("calibration", "")
+
+        self.port = self.get_parameter("port").get_parameter_value().string_value
+        self.timeout = self.get_parameter("timeout").get_parameter_value().integer_value
+        self.calibration = self.get_parameter("calibration").get_parameter_value().string_value
+        if self.port == "":
+            self.get_logger().error("Port parameter is required")
+            exit(1)
+        if self.timeout < 0:
+            self.get_logger().info("Timeout set to infinity")
+            self.timeout = 0
+        else:
+            self.get_logger().info(f"Timeout set to {self.timeout*1e-3}s")
+        if self.calibration == "":
+            self.get_logger().info("No calibration file provided, only reading raw data!")
+        else:
+            self.get_logger().info(f"Calibration file: {self.calibration}")
+
+        try:
+            self.com = tl.TouchlabComms()
+            self.com.init(self.calibration)
+            self.com.connect(self.port)
+        except RuntimeError as e:
+            self.get_logger().error(f"{e}")
+            exit(1)
+
+        self.raw_pub = self.create_publisher(Float64MultiArrayStamped, 'touchlab/raw', 10,
+                                             callback_group=MutuallyExclusiveCallbackGroup())
+        self.cal_pub = self.create_publisher(Float64MultiArrayStamped, 'touchlab/calibrated', 10,
+                                             callback_group=MutuallyExclusiveCallbackGroup())
+
+        self.get_logger().info("Touchlab Driver Started")
+
+    def run(self):
+        """Main loop for the driver."""
+        raw_msg = Float64MultiArrayStamped()
+        cal_msg = Float64MultiArrayStamped()
+        while rclpy.ok():
+            try:
+                data_raw = self.com.read_raw(self.timeout)
+                data_cal = self.com.read(-1)
+                if len(data_raw) == 0:
+                    self.get_logger().error("Sensor not responding, exiting...")
+                    break
+                raw_msg.header.stamp = self.get_clock().now().to_msg()
+                cal_msg.header.stamp = raw_msg.header.stamp
+                raw_msg.multi_array.data = data_raw
+                cal_msg.multi_array.data = data_cal
+
+                self.raw_pub.publish(raw_msg)
+                self.cal_pub.publish(cal_msg)
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                self.get_logger().error(f"Error: {e}")
+                break
+
+
+
+def spin(nodes : list[Node]):
+    """Multi-threaded spinning for ROS nodes."""
+    executor = MultiThreadedExecutor()
+    for node in nodes:
+        executor.add_node(node)
+    try:
+        executor.spin()
+    finally:
+        executor.shutdown()
+        for node in nodes:
+            node.destroy_node()
+
+
+def main():
+    """Main entry point for the teleop node."""
+    rclpy.init(args=sys.argv)
+    driver = TouchlabDriver()
+    thread = Thread(target=spin, args=([driver],))
+    thread.start()
+    driver.run()
+
+
+if __name__ == "__main__":
+    main()
