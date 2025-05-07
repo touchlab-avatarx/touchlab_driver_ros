@@ -1,0 +1,5 @@
+repositories:
+  touchlab_msgs:
+    type: git
+    url: https://github.com/touchlab-avatarx/touchlab_msgs.git
+    version: main
