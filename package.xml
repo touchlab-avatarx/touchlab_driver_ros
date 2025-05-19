@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>touchlab_driver_ros</name>
-  <version>0.1.3</version>
+  <version>0.1.4</version>
   <description>Touchlab driver for ROS</description>
   <maintainer email="vlad@touchlab.io">Vladimir Ivan</maintainer>
   <license>Touchlab Limited</license>
