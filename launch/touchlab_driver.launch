@@ -1,0 +1,14 @@
+<launch>
+    <!-- Define parameters -->
+    <arg name="port" default="/dev/touchlab" />
+    <arg name="calibration" default="" />
+    <arg name="timeout" default="500" />
+
+    <!-- Launch the driver node -->
+    <node pkg="touchlab_driver_ros" type="touchlab_driver" name="touchlab_driver"
+        output="screen" required="true">
+        <param name="port" value="$(arg port)" />
+        <param name="calibration" value="$(arg calibration)" />
+        <param name="timeout" value="$(arg timeout)" />
+    </node>
+</launch>

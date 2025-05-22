@@ -7,11 +7,13 @@
   <maintainer email="vlad@touchlab.io">Vladimir Ivan</maintainer>
   <license>Touchlab Limited</license>
 
-  <depend>rclpy</depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
   <depend>touchlab_msgs</depend>
   <depend>std_srvs</depend>
 
   <export>
-    <build_type>ament_python</build_type>
+    <build_type>catkin</build_type>
   </export>
 </package>

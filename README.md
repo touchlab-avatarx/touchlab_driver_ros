@@ -12,12 +12,12 @@
 
 Simple usage:
 ```
-ros2 launch touchlab_driver_ros touchlab_driver.launch.py
+roslaunch touchlab_driver_ros touchlab_driver.launch
 ```
 This will only publish raw sensor data at `/touchlab_driver/raw`.
 
 With a calibration file:
 ```
-ros2 launch touchlab_driver_ros touchlab_driver.launch.py calibration:=<PATH_TO_FILE>
+roslaunch touchlab_driver_ros touchlab_driver.launch calibration:=<PATH_TO_FILE>
 ```
 This will only publish raw sensor data on `/touchlab_driver/raw` and calibrated data on `/touchlab_driver/calibrated`.
