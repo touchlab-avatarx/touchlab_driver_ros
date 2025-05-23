@@ -5,10 +5,12 @@
 import rclpy
 import touchlab_comm_py as tl
 from touchlab_msgs.msg import Float64MultiArrayStamped
+from std_srvs.srv import Trigger
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from threading import Thread
+import time
 import sys
 
 class TouchlabDriver(Node):
@@ -47,13 +49,33 @@ class TouchlabDriver(Node):
                                              callback_group=MutuallyExclusiveCallbackGroup())
         self.cal_pub = self.create_publisher(Float64MultiArrayStamped, '~/calibrated', 10,
                                              callback_group=MutuallyExclusiveCallbackGroup())
+        self.zero = self.create_service(Trigger, '~/zero', self.zero_callback,
+                                        callback_group=MutuallyExclusiveCallbackGroup())
 
         self.get_logger().info("Touchlab Driver Started")
+
+    def zero_callback(self, request, response):
+        """Service callback to zero the sensor."""
+        self.get_logger().info("Zeroing the sensor")
+        try:
+            self.com.zero([])
+            response.success = True
+            response.message = "Sensor zeroed"
+            self.get_logger().info("Sensor zeroed")
+        except Exception as e:
+            response.success = False
+            response.message = f"Error: {e}"
+            self.get_logger().error(f"Error: {e}")
+        return response
 
     def run(self):
         """Main loop for the driver."""
         raw_msg = Float64MultiArrayStamped()
         cal_msg = Float64MultiArrayStamped()
+        self.get_logger().info("Zeroing the sensor")
+        time.sleep(1.0)
+        self.com.zero([])
+        self.get_logger().info("Sensor zeroed")
         while rclpy.ok():
             try:
                 data_raw = self.com.read_raw(self.timeout)
