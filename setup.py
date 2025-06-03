@@ -5,7 +5,7 @@ import os
 from glob import glob
 from setuptools import find_packages, setup
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 package_name = 'touchlab_driver_ros'
 
 setup(

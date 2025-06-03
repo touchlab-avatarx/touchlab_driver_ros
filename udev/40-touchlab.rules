@@ -1,0 +1,4 @@
+SUBSYSTEM=="tty", ATTRS{idProduct}=="8054", ATTRS{idVendor}=="2341", SYMLINK+="touchlab touchlab_$attr{serial}", MODE="0666", GROUP="dialout"
+SUBSYSTEM=="tty", ATTRS{idProduct}=="804e", ATTRS{idVendor}=="2341", SYMLINK+="touchlab touchlab_$attr{serial}", MODE="0666", GROUP="dialout"
+SUBSYSTEM=="tty", ATTRS{idProduct}=="802f", ATTRS{idVendor}=="2886", SYMLINK+="touchlab touchlab_$attr{serial}", MODE="0666", GROUP="dialout"
+SUBSYSTEM=="tty", ATTRS{idProduct}=="004d", ATTRS{idVendor}=="2341", SYMLINK+="touchlab touchlab_$attr{serial}", MODE="0666", GROUP="dialout"
