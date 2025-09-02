@@ -1,9 +1,8 @@
-# Touchlab ROS Sensor Driver
+This is a ROS wrapper for the [Touchlab Driver for Python](https://touchlab-avatarx.github.io/touchlab_driver_py). We provide [ROS1](https://github.com/touchlab-avatarx/touchlab_driver_ros/tree/ros1) and [ROS2](https://github.com/touchlab-avatarx/touchlab_driver_ros) support. This driver is ideal for quickly starting to Touchlab sensors in ROS.
 
 ## Dependencies:
 
-- Touchlab python drivers:
-  `pip install touchlab-comm-py`
+- Touchlab python drivers via [rosdep](https://wiki.ros.org/rosdep).
 
 - [touchlab_msgs](https://github.com/touchlab-avatarx/touchlab_msgs.git):
   Add this package to your workspace as a [source checkout using vcs](https://docs.ros.org/en/rolling/Installation/Maintaining-a-Source-Checkout.html#download-the-new-source-code).
