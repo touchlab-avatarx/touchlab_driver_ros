@@ -1,4 +1,4 @@
-This is a ROS wrapper for the [Touchlab Driver for Python](https://touchlab-avatarx.github.io/touchlab_driver_py). We provide [ROS1](https://github.com/touchlab-avatarx/touchlab_driver_ros/tree/ros1) and [ROS2](https://github.com/touchlab-avatarx/touchlab_driver_ros) support. This driver is ideal for quickly starting to TOuchlab sensors in ROS.
+This is a ROS wrapper for the [Touchlab Driver for Python](https://touchlab-avatarx.github.io/touchlab_driver_py). We provide [ROS1](https://github.com/touchlab-avatarx/touchlab_driver_ros/tree/ros1) and [ROS2](https://github.com/touchlab-avatarx/touchlab_driver_ros) support. This driver is ideal for quickly starting to Touchlab sensors in ROS.
 
 ## Dependencies:
 
