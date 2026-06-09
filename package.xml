@@ -9,6 +9,7 @@
 
   <depend>rclpy</depend>
   <depend>touchlab_msgs</depend>
+  <depend>python3-touchlab-comm-py-pip</depend>
   <depend>std_srvs</depend>
 
   <export>
